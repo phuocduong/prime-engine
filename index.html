@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game</title>
+</head>
+
+<body>
+    <script>
+        var CrashlogURL = 'https://dev.mecho.net/crashlog/6iGhGc5uccrSSpNQ.php';
+        var GVGet = '?gv=37';
+        var GVGetAppend = '&gv=37';
+        var GVAjaxData = 'gv=37';
+        function OnCrashlogURLCallback(data) {
+            return ''
+                + 'PDProjectName: ' + 'CryptoPets WebJS' + '\n'
+                + 'PDProjectVersion: ' + GVValue + '\n'
+                + 'Assertion:\n' + data + '\n';
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/lib/mersenne-twister.js"></script>
+    <script src="/Engine/Prime.js"></script>
+    <script type="text/javascript">
+
+        function AddPetRig(rigRoot, kind, x, y, hflip = false, uniformScale = 1, zIndex = 100) {
+            var rig = new Prime.Rig();
+            rig.SetContent('/Character/' + kind + '/MarketplacePopupRig.json', function (rig) {
+                var mainObj = rig.children.Get('Main');
+                mainObj.SetRandomActionEnabled(true);
+            });
+            rig.transform.SetPos(x, y);
+            rig.transform.SetScaleXY(uniformScale, uniformScale);
+            rig.transform.SetHFlip(hflip);
+            rig.transform.SetZIndex(zIndex);
+            rigRoot.append(rig.transform.node);
+            app.calcEngine.AddCalcObject(rig);
+        }
+
+        function StartApp() {
+            Prime.ContentPath = 'http://localhost:1234/';
+            // Prime.CrashlogURL = CrashlogURL;
+            // Prime.CrashlogURLCallback = OnCrashlogURLCallback;
+            app.calcEngine = new Prime.CalcEngine();
+            app.calcEngine.Start();
+
+            var rigRootHeader = $('#rigRootHeader');
+            AddPetRig(rigRootHeader, 'Phribbit', 440, -340, true);
+            $('#mainBody').attr('class', 'mainBodyNoScrollH');
+        }
+
+        var app = {
+
+        };
+
+        window.addEventListener('load', function () {
+            StartApp();
+        });
+    </script>
+     <div class="mainBody" id="mainBody">
+         <div id="rigRootHeader" style="transform: scale(1, -1);"></div>
+     </div>
+</body>
+
+</html>
